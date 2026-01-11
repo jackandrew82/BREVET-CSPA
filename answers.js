@@ -8,6 +8,7 @@
 const ANSWERS = {
   A: {
     // SECTION 1 : PRÉPARATION
+    // Q1 = réponse libre (non notée)
     "2": "d",
     "3": "d",
     "4": "a",
@@ -18,7 +19,7 @@ const ANSWERS = {
     "7": "a",
     "8": "d",
     "9": "b",
-    // 10 = question ouverte (2 éléments) → pas notée automatiquement
+    // Q10 = réponse libre (non notée)
     "11": "d",
     "12": "a",
     "13": "b",
@@ -31,7 +32,7 @@ const ANSWERS = {
     "18": "c",
     "19": "b",
     "20": "c",
-    // 21 et 22 = phrases/informations → pas notées comme QCM
+    // Q21, Q22 = phrases / infos → non notées
     "23": "b",
 
     // SECTION 4 : CHUTE LIBRE
@@ -80,7 +81,7 @@ const ANSWERS = {
     "58": "b",
     "59": "a"
 
-    // 60 = tracé de circuit (espace libre texte/dessin) → PAS de correction automatique
+    // Q60 = tracé de circuit (espace libre texte/dessin) → NON notée
   },
 
   B: {
