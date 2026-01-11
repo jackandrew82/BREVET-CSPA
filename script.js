@@ -130,15 +130,13 @@ answerForm.addEventListener("submit", async (e) => {
 
   try {
     const result = await emailjs.send(
-      "SERVICE_ID_ICI",   // ← remplace par ton Service ID EmailJS
-      "TEMPLATE_ID_ICI",  // ← remplace par ton Template ID EmailJS
+      "service_y0utpma",
+      "template_ok28zin",
       templateParams
     );
 
     console.log("Email envoyé:", result.status, result.text);
     statusEl.textContent = "Réponses transmises à l'instructeur. Vous pouvez fermer cette page.";
-    // Option : effacer la sauvegarde locale
-    // localStorage.removeItem(getStorageKey());
   } catch (err) {
     console.error("Erreur EmailJS:", err);
     statusEl.textContent = "Erreur lors de l'envoi. Veuillez réessayer plus tard.";
