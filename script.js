@@ -3,6 +3,7 @@
 let currentBrevet = "A";
 let currentName = "";
 
+// Récupération des éléments du DOM
 const startScreen = document.getElementById("start-screen");
 const formScreen  = document.getElementById("form-screen");
 const formTitle   = document.getElementById("form-title");
@@ -10,6 +11,8 @@ const startBtn    = document.getElementById("start-btn");
 const saveBtn     = document.getElementById("save-btn");
 const answerForm  = document.getElementById("answer-form");
 const statusEl    = document.getElementById("status");
+
+// --- Utilitaires ---
 
 function getSelectedBrevet() {
   const radios = document.querySelectorAll("input[name='brevet']");
@@ -19,26 +22,12 @@ function getSelectedBrevet() {
   return "A";
 }
 
-startBtn.addEventListener("click", () => {
-  const nameInput = document.getElementById("student-name");
-  const nameVal   = nameInput.value.trim();
-  if (!nameVal) {
-    alert("Veuillez saisir le nom complet du participant.");
-    return;
-  }
-  currentName   = nameVal;
-  currentBrevet = getSelectedBrevet();
-
-  formTitle.textContent = `Feuille de réponse – Brevet ${currentBrevet}`;
-  startScreen.classList.add("hidden");
-  formScreen.classList.remove("hidden");
-
-  loadSavedAnswers();
-});
-
 function getStorageKey() {
+  // clé unique par nom + brevet
   return `brevet_${currentBrevet}_${currentName}`;
 }
+
+// --- Sauvegarde locale ---
 
 function saveAnswers() {
   const formData = new FormData(answerForm);
@@ -74,8 +63,30 @@ function loadSavedAnswers() {
   }
 }
 
+// --- Événements ---
+
+// Bouton Commencer
+startBtn.addEventListener("click", () => {
+  const nameInput = document.getElementById("student-name");
+  const nameVal   = nameInput.value.trim();
+  if (!nameVal) {
+    alert("Veuillez saisir le nom complet du participant.");
+    return;
+  }
+  currentName   = nameVal;
+  currentBrevet = getSelectedBrevet();
+
+  formTitle.textContent = `Feuille de réponse – Brevet ${currentBrevet}`;
+  startScreen.classList.add("hidden");
+  formScreen.classList.remove("hidden");
+
+  loadSavedAnswers();
+});
+
+// Bouton Sauvegarder
 saveBtn.addEventListener("click", saveAnswers);
 
+// Soumission du formulaire : envoi EmailJS
 answerForm.addEventListener("submit", async (e) => {
   e.preventDefault();
   statusEl.textContent = "Envoi en cours...";
@@ -86,11 +97,11 @@ answerForm.addEventListener("submit", async (e) => {
     answers[key] = value;
   }
 
-  // Préparation des variables pour EmailJS
+  // Variables pour EmailJS (doivent correspondre à ton template)
   const templateParams = {
     student_name: currentName,
     brevet: currentBrevet,
-    answers_json: JSON.stringify(answers, null, 2) // joli format
+    answers_json: JSON.stringify(answers, null, 2)
   };
 
   try {
@@ -102,6 +113,8 @@ answerForm.addEventListener("submit", async (e) => {
 
     console.log("Email envoyé:", result.status, result.text);
     statusEl.textContent = "Réponses transmises à l'instructeur. Vous pouvez fermer cette page.";
+    // Option : effacer la sauvegarde locale
+    // localStorage.removeItem(getStorageKey());
   } catch (err) {
     console.error("Erreur EmailJS:", err);
     statusEl.textContent = "Erreur lors de l'envoi. Veuillez réessayer plus tard.";
