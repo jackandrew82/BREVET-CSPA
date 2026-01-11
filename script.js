@@ -1,0 +1,98 @@
+// script.js
+
+let currentBrevet = "A";
+let currentName = "";
+
+const startScreen = document.getElementById("start-screen");
+const formScreen  = document.getElementById("form-screen");
+const formTitle   = document.getElementById("form-title");
+const startBtn    = document.getElementById("start-btn");
+const saveBtn     = document.getElementById("save-btn");
+const answerForm  = document.getElementById("answer-form");
+const statusEl    = document.getElementById("status");
+
+function getSelectedBrevet() {
+  const radios = document.querySelectorAll("input[name='brevet']");
+  for (const r of radios) {
+    if (r.checked) return r.value;
+  }
+  return "A";
+}
+
+startBtn.addEventListener("click", () => {
+  const nameInput = document.getElementById("student-name");
+  const nameVal   = nameInput.value.trim();
+  if (!nameVal) {
+    alert("Veuillez saisir le nom complet du participant.");
+    return;
+  }
+  currentName   = nameVal;
+  currentBrevet = getSelectedBrevet();
+
+  formTitle.textContent = `Feuille de réponse – Brevet ${currentBrevet}`;
+  startScreen.classList.add("hidden");
+  formScreen.classList.remove("hidden");
+
+  loadSavedAnswers();
+});
+
+function getStorageKey() {
+  return `brevet_${currentBrevet}_${currentName}`;
+}
+
+function saveAnswers() {
+  const formData = new FormData(answerForm);
+  const answers = {};
+  for (const [key, value] of formData.entries()) {
+    answers[key] = value;
+  }
+  const payload = {
+    name: currentName,
+    brevet: currentBrevet,
+    answers
+  };
+  localStorage.setItem(getStorageKey(), JSON.stringify(payload));
+  statusEl.textContent = "Progression sauvegardée sur cet appareil.";
+}
+
+function loadSavedAnswers() {
+  const raw = localStorage.getItem(getStorageKey());
+  if (!raw) return;
+  try {
+    const payload = JSON.parse(raw);
+    if (payload && payload.answers) {
+      for (const [q, val] of Object.entries(payload.answers)) {
+        const input = answerForm.querySelector(
+          `[name="${q}"][value="${val}"]`
+        );
+        if (input) input.checked = true;
+      }
+      statusEl.textContent = "Anciennes réponses rechargées.";
+    }
+  } catch (e) {
+    console.error(e);
+  }
+}
+
+saveBtn.addEventListener("click", saveAnswers);
+
+answerForm.addEventListener("submit", async (e) => {
+  e.preventDefault();
+  statusEl.textContent = "Envoi en cours...";
+
+  const formData = new FormData(answerForm);
+  const answers = {};
+  for (const [key, value] of formData.entries()) {
+    answers[key] = value;
+  }
+
+  const payload = {
+    name: currentName,
+    brevet: currentBrevet,
+    answers
+  };
+
+  // Pour l’instant, simple affichage console (pas encore de courriel)
+  console.log("À envoyer au serveur:", payload);
+  statusEl.textContent = "Réponses enregistrées localement (pas encore de courriel).";
+});
