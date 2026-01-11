@@ -130,8 +130,8 @@ answerForm.addEventListener("submit", async (e) => {
 
   try {
     const result = await emailjs.send(
-      "service_y0utpma",
-      "template_ok28zin",
+      "SERVICE_ID_ICI",   // ← remplace par ton Service ID EmailJS
+      "TEMPLATE_ID_ICI",  // ← remplace par ton Template ID EmailJS
       templateParams
     );
 
