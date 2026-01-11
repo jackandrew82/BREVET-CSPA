@@ -3,7 +3,7 @@
 // Format : "numéro_de_question": "réponse"
 // Choix multiples : "a" | "b" | "c" | "d"
 // Vrai/Faux : "v" (vrai) | "f" (faux)
-// RGS/Reco : "a" ou "b" selon l’énoncé
+// RGS/Reco : "a" ou "b" selon l'énoncé
 
 const ANSWERS = {
   A: {
