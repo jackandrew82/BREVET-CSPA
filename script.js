@@ -1,35 +1,33 @@
-// script.js
+var currentBrevet = "A";
+var currentName = "";
 
-let currentBrevet = "A";
-let currentName = "";
-
-const startScreen = document.getElementById("start-screen");
-const formScreen = document.getElementById("form-screen");
-const formTitle = document.getElementById("form-title");
-const startBtn = document.getElementById("start-btn");
-const saveBtn = document.getElementById("save-btn");
-const answerForm = document.getElementById("answer-form");
-const statusEl = document.getElementById("status");
+var startScreen = document.getElementById("start-screen");
+var formScreen = document.getElementById("form-screen");
+var formTitle = document.getElementById("form-title");
+var startBtn = document.getElementById("start-btn");
+var saveBtn = document.getElementById("save-btn");
+var answerForm = document.getElementById("answer-form");
+var statusEl = document.getElementById("status");
 
 function getSelectedBrevet() {
-  const radios = document.querySelectorAll("input[name='brevet']");
-  for (const r of radios) {
-    if (r.checked) return r.value;
+  var radios = document.querySelectorAll("input[name='brevet']");
+  for (var i = 0; i < radios.length; i++) {
+    if (radios[i].checked) return radios[i].value;
   }
   return "A";
 }
 
 function getStorageKey() {
-  return `brevet_${currentBrevet}_${currentName}`;
+  return "brevet_" + currentBrevet + "_" + currentName;
 }
 
 function saveAnswers() {
-  const formData = new FormData(answerForm);
-  const answers = {};
-  for (const [key, value] of formData.entries()) {
+  var formData = new FormData(answerForm);
+  var answers = {};
+  formData.forEach(function(value, key) {
     answers[key] = value;
-  }
-  const payload = {
+  });
+  var payload = {
     name: currentName,
     brevet: currentBrevet,
     answers: answers
@@ -39,13 +37,14 @@ function saveAnswers() {
 }
 
 function loadSavedAnswers() {
-  const raw = localStorage.getItem(getStorageKey());
+  var raw = localStorage.getItem(getStorageKey());
   if (!raw) return;
   try {
-    const payload = JSON.parse(raw);
+    var payload = JSON.parse(raw);
     if (payload && payload.answers) {
-      for (const [q, val] of Object.entries(payload.answers)) {
-        const input = answerForm.querySelector(`[name="${q}"][value="${val}"]`);
+      for (var q in payload.answers) {
+        var val = payload.answers[q];
+        var input = answerForm.querySelector("[name='" + q + "'][value='" + val + "']");
         if (input) input.checked = true;
       }
       statusEl.textContent = "Anciennes réponses rechargées.";
@@ -56,8 +55,8 @@ function loadSavedAnswers() {
 }
 
 startBtn.addEventListener("click", function() {
-  const nameInput = document.getElementById("student-name");
-  const nameVal = nameInput.value.trim();
+  var nameInput = document.getElementById("student-name");
+  var nameVal = nameInput.value.trim();
   if (!nameVal) {
     alert("Veuillez saisir le nom complet du participant.");
     return;
@@ -72,24 +71,25 @@ startBtn.addEventListener("click", function() {
 
 saveBtn.addEventListener("click", saveAnswers);
 
-answerForm.addEventListener("submit", async function(e) {
+answerForm.addEventListener("submit", function(e) {
   e.preventDefault();
   statusEl.textContent = "Envoi en cours...";
 
-  const formData = new FormData(answerForm);
-  const answers = {};
-  for (const [key, value] of formData.entries()) {
+  var formData = new FormData(answerForm);
+  var answers = {};
+  formData.forEach(function(value, key) {
     answers[key] = value;
-  }
+  });
 
-  const correctKey = ANSWERS[currentBrevet] || {};
-  let total = 0;
-  let correctCount = 0;
-  const mistakes = [];
+  var correctKey = ANSWERS[currentBrevet] || {};
+  var total = 0;
+  var correctCount = 0;
+  var mistakes = [];
 
-  for (const [qNum, rightVal] of Object.entries(correctKey)) {
+  for (var qNum in correctKey) {
     total++;
-    const userVal = answers[qNum] || null;
+    var rightVal = correctKey[qNum];
+    var userVal = answers[qNum] || null;
     if (userVal === rightVal) {
       correctCount++;
     } else {
@@ -101,9 +101,9 @@ answerForm.addEventListener("submit", async function(e) {
     }
   }
 
-  const scorePercent = total > 0 ? Math.round((correctCount / total) * 100) : 0;
+  var scorePercent = total > 0 ? Math.round((correctCount / total) * 100) : 0;
 
-  const templateParams = {
+  var templateParams = {
     student_name: currentName,
     brevet: currentBrevet,
     score: correctCount + " / " + total + " (" + scorePercent + "%)",
@@ -111,12 +111,13 @@ answerForm.addEventListener("submit", async function(e) {
     answers_json: JSON.stringify(answers, null, 2)
   };
 
-  try {
-    const result = await emailjs.send("service_y0utpma", "template_ok28zin", templateParams);
-    console.log("Email envoyé:", result.status, result.text);
-    statusEl.textContent = "Réponses transmises à l'instructeur. Vous pouvez fermer cette page.";
-  } catch (err) {
-    console.error("Erreur EmailJS:", err);
-    statusEl.textContent = "Erreur lors de l'envoi. Veuillez réessayer plus tard.";
-  }
+  emailjs.send("service_y0utpma", "template_ok28zin", templateParams)
+    .then(function(result) {
+      console.log("Email envoyé:", result.status, result.text);
+      statusEl.textContent = "Réponses transmises à l'instructeur. Vous pouvez fermer cette page.";
+    })
+    .catch(function(err) {
+      console.error("Erreur EmailJS:", err);
+      statusEl.textContent = "Erreur lors de l'envoi. Veuillez réessayer plus tard.";
+    });
 });
