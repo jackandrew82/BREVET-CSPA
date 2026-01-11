@@ -86,7 +86,7 @@ startBtn.addEventListener("click", () => {
 // Bouton Sauvegarder
 saveBtn.addEventListener("click", saveAnswers);
 
-// Soumission du formulaire : envoi EmailJS
+// Soumission du formulaire : correction + envoi EmailJS
 answerForm.addEventListener("submit", async (e) => {
   e.preventDefault();
   statusEl.textContent = "Envoi en cours...";
@@ -97,10 +97,34 @@ answerForm.addEventListener("submit", async (e) => {
     answers[key] = value;
   }
 
-  // Variables pour EmailJS (doivent correspondre à ton template)
+  // --- Correction locale avec ANSWERS (défini dans answers.js) ---
+  const correctKey = ANSWERS[currentBrevet] || {};
+  let total = 0;
+  let correctCount = 0;
+  const mistakes = []; // questions ratées
+
+  for (const [qNum, rightVal] of Object.entries(correctKey)) {
+    total++;
+    const userVal = answers[qNum] || null;
+    if (userVal === rightVal) {
+      correctCount++;
+    } else {
+      mistakes.push({
+        question: qNum,
+        user_answer: userVal,
+        right_answer: rightVal
+      });
+    }
+  }
+
+  const scorePercent = total > 0 ? Math.round((correctCount / total) * 100) : 0;
+
+  // --- Préparation des variables pour EmailJS ---
   const templateParams = {
     student_name: currentName,
     brevet: currentBrevet,
+    score: `${correctCount} / ${total} (${scorePercent}%)`,
+    mistakes_json: JSON.stringify(mistakes, null, 2),
     answers_json: JSON.stringify(answers, null, 2)
   };
 
