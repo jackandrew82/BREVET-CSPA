@@ -1,11 +1,67 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <title>Brevet CSPA</title>
+  <meta charset="UTF-8" />
+  <title>Brevet – Feuille de réponse</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="answers.js"></script>
+  <script defer src="script.js"></script>
 </head>
 <body>
-  <h1>Test Brevet CSPA</h1>
-  <p>Si tu vois cette page en ligne, GitHub Pages fonctionne.</p>
+  <div class="container">
+    <!-- Écran d'accueil -->
+    <section id="start-screen">
+      <h1>Brevet – Feuille de réponse</h1>
+
+      <label for="student-name">Nom complet du participant</label>
+      <input type="text" id="student-name" placeholder="Prénom Nom" />
+
+      <fieldset>
+        <legend>Choisir le brevet</legend>
+        <label><input type="radio" name="brevet" value="A" checked /> Brevet A</label>
+        <label><input type="radio" name="brevet" value="B" /> Brevet B</label>
+        <label><input type="radio" name="brevet" value="C" /> Brevet C</label>
+      </fieldset>
+
+      <button id="start-btn">Commencer</button>
+    </section>
+
+    <!-- Écran de feuille réponse -->
+    <section id="form-screen" class="hidden">
+      <h2 id="form-title"></h2>
+      <p class="info">Le participant a la version papier des questions. Répondre ici seulement.</p>
+
+      <form id="answer-form">
+        <!-- Exemple de quelques questions; on ajoutera le reste plus tard -->
+        <div class="question">
+          <span class="q-label">Q2</span>
+          <div class="options">
+            <label><input type="radio" name="q2" value="a" /> a)</label>
+            <label><input type="radio" name="q2" value="b" /> b)</label>
+            <label><input type="radio" name="q2" value="c" /> c)</label>
+            <label><input type="radio" name="q2" value="d" /> d)</label>
+          </div>
+        </div>
+
+        <div class="question">
+          <span class="q-label">Q3</span>
+          <div class="options">
+            <label><input type="radio" name="q3" value="a" /> a)</label>
+            <label><input type="radio" name="q3" value="b" /> b)</label>
+            <label><input type="radio" name="q3" value="c" /> c)</label>
+            <label><input type="radio" name="q3" value="d" /> d)</label>
+          </div>
+        </div>
+
+        <div class="buttons">
+          <button type="button" id="save-btn">Sauvegarder pour plus tard</button>
+          <button type="submit" id="submit-btn">Soumettre</button>
+        </div>
+      </form>
+
+      <p id="status" class="status"></p>
+    </section>
+  </div>
 </body>
 </html>
+
