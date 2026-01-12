@@ -1,7 +1,6 @@
 const { PDFDocument, rgb, StandardFonts } = require('pdf-lib');
 const fs = require('fs').promises;
 const path = require('path');
-const { ANSWER_POSITIONS } = require('./answer-positions');
 
 async function generateAnswerSheetPDF(studentName, brevet, mistakes, allAnswers) {
   const templatePath = path.join(__dirname, brevet + '-FEUILLE-REPONSE.pdf');
@@ -24,38 +23,74 @@ async function generateAnswerSheetPDF(studentName, brevet, mistakes, allAnswers)
     color: rgb(0, 0, 0),
   });
   
-  const positions = ANSWER_POSITIONS[brevet] || {};
-  
-  // Marquer SEULEMENT les erreurs en rouge
-  mistakes.forEach(mistake => {
-    const qNum = mistake.question;
-    const userAnswer = mistake.user_answer;
+  // Si erreurs, grand encadre rouge en haut
+  if (mistakes.length > 0) {
+    // Rectangle rouge
+    firstPage.drawRectangle({
+      x: 40,
+      y: height - 150,
+      width: width - 80,
+      height: 90,
+      color: rgb(1, 0.95, 0.95),
+      borderColor: rgb(1, 0, 0),
+      borderWidth: 3,
+    });
     
-    if (positions[qNum]) {
-      const pos = positions[qNum];
-      const targetPage = pages[pos.page] || firstPage;
-      
-      // Cercle rouge autour numero question
-      targetPage.drawCircle({
-        x: pos.x,
-        y: pos.y,
-        size: 12,
-        borderColor: rgb(1, 0, 0),
-        borderWidth: 2.5,
-      });
-      
-      // Reponse incorrecte a cote
-      if (userAnswer) {
-        targetPage.drawText('[' + userAnswer + ']', {
-          x: pos.x + 20,
-          y: pos.y - 4,
-          size: 10,
+    // Titre
+    firstPage.drawText('QUESTIONS A CORRIGER:', {
+      x: 50,
+      y: height - 70,
+      size: 14,
+      font: boldFont,
+      color: rgb(0.8, 0, 0),
+    });
+    
+    // Liste des numeros de questions erronees
+    const errorNumbers = mistakes.map(m => {
+      const userAns = m.user_answer || 'X';
+      return 'Q' + m.question + '[' + userAns + ']';
+    });
+    
+    // Afficher en plusieurs lignes si necessaire
+    let currentLine = '';
+    let lineY = height - 95;
+    
+    errorNumbers.forEach((item, index) => {
+      const testLine = currentLine + item + '  ';
+      if (font.widthOfTextAtSize(testLine, 11) > width - 120) {
+        firstPage.drawText(currentLine, {
+          x: 50,
+          y: lineY,
+          size: 11,
           font: boldFont,
-          color: rgb(1, 0, 0),
+          color: rgb(0.8, 0, 0),
         });
+        currentLine = item + '  ';
+        lineY -= 18;
+      } else {
+        currentLine = testLine;
       }
+    });
+    
+    if (currentLine) {
+      firstPage.drawText(currentLine, {
+        x: 50,
+        y: lineY,
+        size: 11,
+        font: boldFont,
+        color: rgb(0.8, 0, 0),
+      });
     }
-  });
+    
+    // Note
+    firstPage.drawText('(Voir rapport detaille PDF joint)', {
+      x: 50,
+      y: height - 145,
+      size: 8,
+      font,
+      color: rgb(0.5, 0, 0),
+    });
+  }
   
   const pdfBytes = await pdfDoc.save();
   return Buffer.from(pdfBytes);
