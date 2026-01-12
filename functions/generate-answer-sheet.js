@@ -11,68 +11,37 @@ async function generateAnswerSheetPDF(studentName, brevet, mistakes, allAnswers)
   const firstPage = pages[0];
   const { width, height } = firstPage.getSize();
   
-  const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
   const boldFont = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
   
-  // Nom etudiant en haut a droite
+  // Nom
   firstPage.drawText('Nom: ' + studentName, {
     x: width - 200,
-    y: height - 40,
+    y: height - 30,
     size: 12,
     font: boldFont,
     color: rgb(0, 0, 0),
   });
   
-  // Calculer positions automatiquement
-  function getQuestionPosition(qNum) {
-    const q = parseInt(qNum);
-    const spacing = 18; // Espacement entre questions (ajustable)
+  // TEST : Q2 a 5 positions differentes
+  if (allAnswers['q2']) {
+    const testPositions = [
+      { x: 80, y: 740, label: 'A' },
+      { x: 80, y: 730, label: 'B' },
+      { x: 80, y: 720, label: 'C' },
+      { x: 80, y: 710, label: 'D' },
+      { x: 80, y: 700, label: 'E' }
+    ];
     
-    // Colonne gauche : Q1-31
-    if (q >= 1 && q <= 31) {
-      return {
-        x: 40,
-        y: height - 100 - ((q - 1) * spacing),
-        page: 0
-      };
-    }
-    // Colonne droite : Q32-60
-    else if (q >= 32 && q <= 60) {
-      return {
-        x: width / 2 + 20,
-        y: height - 100 - ((q - 32) * spacing),
-        page: 0
-      };
-    }
-    return null;
+    testPositions.forEach(pos => {
+      firstPage.drawText(pos.label + ':' + allAnswers['q2'], {
+        x: pos.x,
+        y: pos.y,
+        size: 10,
+        font: boldFont,
+        color: rgb(1, 0, 0),
+      });
+    });
   }
-  
-  // Surligner erreurs
-  mistakes.forEach(mistake => {
-    const pos = getQuestionPosition(mistake.question);
-    if (!pos) return;
-    
-    const targetPage = pages[pos.page] || firstPage;
-    
-    // Rectangle rouge semi-transparent
-    targetPage.drawRectangle({
-      x: pos.x - 3,
-      y: pos.y - 2,
-      width: 25,
-      height: 14,
-      color: rgb(1, 0, 0),
-      opacity: 0.4,
-    });
-    
-    // Numero en rouge gras
-    targetPage.drawText(mistake.question, {
-      x: pos.x,
-      y: pos.y,
-      size: 10,
-      font: boldFont,
-      color: rgb(1, 0, 0),
-    });
-  });
   
   const pdfBytes = await pdfDoc.save();
   return Buffer.from(pdfBytes);
