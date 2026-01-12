@@ -22,21 +22,11 @@ async function generateAnswerSheetPDF(studentName, brevet, mistakes, allAnswers)
     color: rgb(0, 0, 0),
   });
   
-  // CALIBRATION RAPIDE - Test Q2 seulement
-  // Afficher dimensions pour reference
-  firstPage.drawText('PDF: ' + width + 'x' + height, {
-    x: 50,
-    y: 50,
-    size: 8,
-    font: boldFont,
-    color: rgb(0, 0, 1),
-  });
-  
-  // Si Q2 repondue, afficher a position test
+  // TEST Q2 avec nouvelles coordonnees
   if (allAnswers['q2']) {
-    firstPage.drawText('TEST-Q2: ' + allAnswers['q2'], {
-      x: 90,  // Position horizontale (apres le numero)
-      y: 725, // Position verticale (a ajuster)
+    firstPage.drawText('Q2: ' + allAnswers['q2'], {
+      x: 62,  // 90 - 28 (1 cm gauche)
+      y: 640, // 725 - 85 (3 cm bas)
       size: 11,
       font: boldFont,
       color: rgb(1, 0, 0),
