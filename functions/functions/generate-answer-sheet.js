@@ -23,54 +23,46 @@ async function generateAnswerSheetPDF(studentName, brevet, mistakes, allAnswers)
     color: rgb(0, 0, 0),
   });
   
-  // Map des erreurs pour savoir lesquelles colorer en rouge
+  // Map des erreurs
   const errorsMap = {};
   mistakes.forEach(m => {
     errorsMap[m.question] = true;
   });
   
-  // Calculer positions
-  function getQuestionPosition(qNum) {
+  // Positions approximatives des cases reponses (a ajuster)
+  function getAnswerPosition(qNum) {
     const q = parseInt(qNum);
     const spacing = 18;
     
+    // Colonne gauche Q1-31
     if (q >= 1 && q <= 31) {
-      return { x: 40, y: height - 100 - ((q - 1) * spacing), page: 0 };
+      return { x: 65, y: height - 100 - ((q - 1) * spacing), page: 0 };
     }
+    // Colonne droite Q32-60
     else if (q >= 32 && q <= 60) {
-      return { x: width / 2 + 20, y: height - 100 - ((q - 32) * spacing), page: 0 };
+      return { x: width / 2 + 45, y: height - 100 - ((q - 32) * spacing), page: 0 };
     }
     return null;
   }
   
-  // Afficher TOUTES les reponses du participant
+  // Afficher toutes les reponses
   for (const [qNum, answer] of Object.entries(allAnswers)) {
-    if (!answer || answer === '') continue; // Skip si pas de reponse
+    if (!answer || answer === '') continue;
     
-    const pos = getQuestionPosition(qNum);
+    const pos = getAnswerPosition(qNum);
     if (!pos) continue;
     
     const targetPage = pages[pos.page] || firstPage;
     const isError = errorsMap[qNum];
-    const color = isError ? rgb(1, 0, 0) : rgb(0, 0.5, 0); // Rouge si erreur, vert si bon
     
-    // Surligner si erreur
-    if (isError) {
-      targetPage.drawRectangle({
-        x: pos.x - 3,
-        y: pos.y - 2,
-        width: 25,
-        height: 14,
-        color: rgb(1, 0, 0),
-        opacity: 0.3,
-      });
-    }
+    // Couleur : rouge si erreur, noir si bon
+    const color = isError ? rgb(1, 0, 0) : rgb(0, 0, 0);
     
-    // Afficher reponse a cote du numero
-    targetPage.drawText('[' + answer + ']', {
-      x: pos.x + 22,
+    // Ecrire la reponse
+    targetPage.drawText(answer, {
+      x: pos.x,
       y: pos.y,
-      size: 9,
+      size: 11,
       font: boldFont,
       color: color,
     });
