@@ -1,5 +1,6 @@
 const nodemailer = require('nodemailer');
 const { generateErrorReportPDF } = require('./generate-error-report');
+const { generateAnswerSheetPDF } = require('./generate-answer-sheet');
 
 exports.handler = async (event, context) => {
   const headers = {
@@ -22,8 +23,13 @@ exports.handler = async (event, context) => {
     
     const mistakes = JSON.parse(mistakes_json);
 
-    // Générer le PDF du rapport d'erreurs
+    console.log('Generating error report PDF...');
     const errorReportPDF = await generateErrorReportPDF(student_name, brevet, score, mistakes);
+    
+    console.log('Generating answer sheet PDF...');
+    const answerSheetPDF = await generateAnswerSheetPDF(student_name, brevet, mistakes);
+    
+    console.log('PDFs generated, sending email...');
 
     const transporter = nodemailer.createTransport({
       service: 'gmail',
@@ -36,43 +42,38 @@ exports.handler = async (event, context) => {
     const mailOptions = {
       from: process.env.EMAIL_USER,
       to: 'brevetcspa@gmail.com',
-      subject: `${student_name} - Brevet ${brevet}`,
-      text: `
-Nom : ${student_name}
-Brevet : ${brevet}
-Score : ${score}
-
-Voir le PDF joint pour le rapport d'erreurs détaillé.
-
-Questions ratées :
-${mistakes_json}
-
-Réponses complètes :
-${answers_json}
-      `,
+      subject: student_name + ' - Brevet ' + brevet,
+      text: 'Nom : ' + student_name + '\nBrevet : ' + brevet + '\nScore : ' + score + '\n\nVoir les 2 PDF joints pour details.',
       attachments: [
         {
-          filename: `Rapport-Erreurs-${student_name.replace(/\s+/g, '-')}-Brevet-${brevet}.pdf`,
+          filename: 'Rapport-Erreurs-' + student_name.replace(/\s+/g, '-') + '-Brevet-' + brevet + '.pdf',
           content: errorReportPDF,
+          contentType: 'application/pdf'
+        },
+        {
+          filename: 'Feuille-Corrigee-' + student_name.replace(/\s+/g, '-') + '-Brevet-' + brevet + '.pdf',
+          content: answerSheetPDF,
           contentType: 'application/pdf'
         }
       ]
     };
 
     await transporter.sendMail(mailOptions);
+    
+    console.log('Email sent successfully with 2 PDFs');
 
     return {
       statusCode: 200,
       headers,
-      body: JSON.stringify({ success: true, message: 'Email envoyé avec PDF' })
+      body: JSON.stringify({ success: true, message: 'Email envoye avec 2 PDF' })
     };
 
   } catch (error) {
-    console.error('Erreur:', error);
+    console.error('Erreur complete:', error);
     return {
       statusCode: 500,
       headers,
-      body: JSON.stringify({ success: false, error: error.message })
+      body: JSON.stringify({ success: false, error: error.message, stack: error.stack })
     };
   }
 };
