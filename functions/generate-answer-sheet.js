@@ -23,50 +23,52 @@ async function generateAnswerSheetPDF(studentName, brevet, mistakes, allAnswers)
     color: rgb(0, 0, 0),
   });
   
-  // Positions approximatives (colonnes gauche et droite)
-  const leftColumn = { x: 20, startY: 750 };
-  const rightColumn = { x: 320, startY: 750 };
-  
-  // Surligner chaque question erronee
-  mistakes.forEach(mistake => {
-    const qNum = parseInt(mistake.question);
-    let x, y, page = 0;
+  // Calculer positions automatiquement
+  function getQuestionPosition(qNum) {
+    const q = parseInt(qNum);
+    const spacing = 18; // Espacement entre questions (ajustable)
     
-    // Logique simple de positionnement
-    if (qNum <= 23) {
-      // Page 1, colonne gauche
-      x = leftColumn.x;
-      y = leftColumn.startY - ((qNum - 1) * 25);
-      page = 0;
-    } else if (qNum <= 46) {
-      // Page 1, colonne droite
-      x = rightColumn.x;
-      y = rightColumn.startY - ((qNum - 24) * 25);
-      page = 0;
-    } else {
-      // Page 1, colonne droite (suite)
-      x = rightColumn.x;
-      y = rightColumn.startY - ((qNum - 47) * 25);
-      page = 0;
+    // Colonne gauche : Q1-31
+    if (q >= 1 && q <= 31) {
+      return {
+        x: 40,
+        y: height - 100 - ((q - 1) * spacing),
+        page: 0
+      };
     }
+    // Colonne droite : Q32-60
+    else if (q >= 32 && q <= 60) {
+      return {
+        x: width / 2 + 20,
+        y: height - 100 - ((q - 32) * spacing),
+        page: 0
+      };
+    }
+    return null;
+  }
+  
+  // Surligner erreurs
+  mistakes.forEach(mistake => {
+    const pos = getQuestionPosition(mistake.question);
+    if (!pos) return;
     
-    const targetPage = pages[page] || firstPage;
+    const targetPage = pages[pos.page] || firstPage;
     
-    // Rectangle rouge semi-transparent (surlignage)
+    // Rectangle rouge semi-transparent
     targetPage.drawRectangle({
-      x: x - 5,
-      y: y - 3,
-      width: 35,
-      height: 16,
+      x: pos.x - 3,
+      y: pos.y - 2,
+      width: 25,
+      height: 14,
       color: rgb(1, 0, 0),
-      opacity: 0.3,
+      opacity: 0.4,
     });
     
-    // Texte rouge gras
-    targetPage.drawText('Q' + mistake.question, {
-      x: x,
-      y: y,
-      size: 11,
+    // Numero en rouge gras
+    targetPage.drawText(mistake.question, {
+      x: pos.x,
+      y: pos.y,
+      size: 10,
       font: boldFont,
       color: rgb(1, 0, 0),
     });
