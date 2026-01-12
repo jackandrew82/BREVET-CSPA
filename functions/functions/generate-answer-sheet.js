@@ -17,7 +17,7 @@ async function generateAnswerSheetPDF(studentName, brevet, mistakes, allAnswers)
   // Nom etudiant en haut a droite
   firstPage.drawText('Nom: ' + studentName, {
     x: width - 200,
-    y: height - 40,
+    y: height - 30,
     size: 12,
     font: boldFont,
     color: rgb(0, 0, 0),
@@ -29,18 +29,27 @@ async function generateAnswerSheetPDF(studentName, brevet, mistakes, allAnswers)
     errorsMap[m.question] = true;
   });
   
-  // Positions approximatives des cases reponses (a ajuster)
+  // Positions ajustees pour lignes reponses
   function getAnswerPosition(qNum) {
     const q = parseInt(qNum);
-    const spacing = 18;
+    const lineHeight = 18.5; // Ajuster selon espacement reel
+    const startY = 747; // Position premiere ligne (ajustable)
     
     // Colonne gauche Q1-31
     if (q >= 1 && q <= 31) {
-      return { x: 65, y: height - 100 - ((q - 1) * spacing), page: 0 };
+      return { 
+        x: 80,  // Position sur la ligne (apres numero)
+        y: startY - ((q - 1) * lineHeight), 
+        page: 0 
+      };
     }
-    // Colonne droite Q32-60
+    // Colonne droite Q32-60  
     else if (q >= 32 && q <= 60) {
-      return { x: width / 2 + 45, y: height - 100 - ((q - 32) * spacing), page: 0 };
+      return { 
+        x: width / 2 + 65, 
+        y: startY - ((q - 32) * lineHeight), 
+        page: 0 
+      };
     }
     return null;
   }
@@ -58,11 +67,11 @@ async function generateAnswerSheetPDF(studentName, brevet, mistakes, allAnswers)
     // Couleur : rouge si erreur, noir si bon
     const color = isError ? rgb(1, 0, 0) : rgb(0, 0, 0);
     
-    // Ecrire la reponse
-    targetPage.drawText(answer, {
+    // Ecrire la reponse sur la ligne
+    targetPage.drawText(answer.toUpperCase(), {
       x: pos.x,
       y: pos.y,
-      size: 11,
+      size: 10,
       font: boldFont,
       color: color,
     });
