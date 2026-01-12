@@ -1,6 +1,6 @@
-// Coordonnees des numeros de questions sur les PDF
-// Format: { x: horizontal, y: vertical, page: numero page (0 = premiere) }
-// A ajuster selon layout reel
+// Coordonnees approximatives des numeros de questions
+// Format: { x: horizontal, y: vertical (du bas), page: 0-based }
+// A ajuster selon layout reel du PDF
 
 const ANSWER_POSITIONS = {
   A: {
@@ -10,7 +10,55 @@ const ANSWER_POSITIONS = {
     "5": { x: 30, y: 660, page: 0 },
     "6": { x: 30, y: 630, page: 0 },
     "7": { x: 30, y: 600, page: 0 },
-    // On ajoutera les autres apres premier test
+    "8": { x: 30, y: 570, page: 0 },
+    "9": { x: 30, y: 540, page: 0 },
+    "11": { x: 30, y: 510, page: 0 },
+    "12": { x: 30, y: 480, page: 0 },
+    "13": { x: 30, y: 450, page: 0 },
+    "14": { x: 30, y: 420, page: 0 },
+    "15": { x: 30, y: 390, page: 0 },
+    "16": { x: 30, y: 360, page: 0 },
+    "17": { x: 30, y: 330, page: 0 },
+    "18": { x: 30, y: 300, page: 0 },
+    "19": { x: 30, y: 270, page: 0 },
+    "20": { x: 30, y: 240, page: 0 },
+    "23": { x: 30, y: 210, page: 0 },
+    "24": { x: 30, y: 750, page: 1 },
+    "25": { x: 30, y: 720, page: 1 },
+    "26": { x: 30, y: 690, page: 1 },
+    "27": { x: 30, y: 660, page: 1 },
+    "28": { x: 30, y: 630, page: 1 },
+    "29": { x: 30, y: 600, page: 1 },
+    "30": { x: 30, y: 570, page: 1 },
+    "31": { x: 30, y: 540, page: 1 },
+    "32": { x: 30, y: 510, page: 1 },
+    "33": { x: 30, y: 480, page: 1 },
+    "34": { x: 30, y: 450, page: 1 },
+    "35": { x: 30, y: 420, page: 1 },
+    "36": { x: 30, y: 390, page: 1 },
+    "37": { x: 30, y: 360, page: 1 },
+    "38": { x: 30, y: 330, page: 1 },
+    "39": { x: 30, y: 300, page: 1 },
+    "40": { x: 30, y: 270, page: 1 },
+    "41": { x: 30, y: 240, page: 1 },
+    "42": { x: 30, y: 210, page: 1 },
+    "43": { x: 30, y: 180, page: 1 },
+    "44": { x: 30, y: 150, page: 1 },
+    "45": { x: 30, y: 120, page: 1 },
+    "46": { x: 30, y: 90, page: 1 },
+    "47": { x: 30, y: 750, page: 2 },
+    "48": { x: 30, y: 720, page: 2 },
+    "49": { x: 30, y: 690, page: 2 },
+    "50": { x: 30, y: 660, page: 2 },
+    "51": { x: 30, y: 630, page: 2 },
+    "52": { x: 30, y: 600, page: 2 },
+    "53": { x: 30, y: 570, page: 2 },
+    "54": { x: 30, y: 540, page: 2 },
+    "55": { x: 30, y: 510, page: 2 },
+    "56": { x: 30, y: 480, page: 2 },
+    "57": { x: 30, y: 450, page: 2 },
+    "58": { x: 30, y: 420, page: 2 },
+    "59": { x: 30, y: 390, page: 2 }
   },
   B: {},
   C: {}
