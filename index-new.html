@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<title>Brevet – Feuille de réponse</title>
+<link rel="stylesheet" href="style.css" />
+<script src="answers.js"></script>
+<script defer src="script.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+<script type="text/javascript">(function(){emailjs.init("rx8JwSxX7KbIhW0Hw");})();</script>
+</head>
+<body>
+<div class="container">
+<section id="start-screen">
+<h1>Brevet – Feuille de réponse</h1>
+<label for="student-name">Nom complet du participant</label>
+<input type="text" id="student-name" placeholder="Prénom Nom" />
+<fieldset>
+<legend>Choisir le brevet</legend>
+<label><input type="radio" name="brevet" value="A" checked /> Brevet A</label>
+<label><input type="radio" name="brevet" value="B" /> Brevet B</label>
+<label><input type="radio" name="brevet" value="C" /> Brevet C</label>
+</fieldset>
+<button id="start-btn">Commencer</button>
+</section>
+<section id="form-screen" class="hidden">
+<h2 id="form-title"></h2>
+<p class="info">Le participant a la version papier des questions. Répondre ici seulement.</p>
+<form id="answer-form">
+<div class="question"><span class="q-label">Q1</span><div class="options"><p>Décrire 4 activités de préparation :</p><textarea name="q1" rows="4" style="width:100%;"></textarea></div></div>
+<div class="question"><span class="q-label">Q2</span><div class="options"><label><input type="radio" name="q2" value="a" /> a)</label><label><input type="radio" name="q2" value="b" /> b)</label><label><input type="radio" name="q2" value="c" /> c)</label><label><input type="radio" name="q2" value="d" /> d)</label></div></div>
+<div class="question"><span class="q-label">Q3</span><div class="options"><label><input type="radio" name="q3" value="a" /> a)</label><label><input type="radio" name="q3" value="b" /> b)</label><label><input type="radio" name="q3" value="c" /> c)</label><label><input type="radio" name="q3" value="d" /> d)</label></div></div>
+<div class="question"><span class="q-label">Q4</span><div class="options"><label><input type="radio" name="q4" value="a" /> a)</label><label><input type="radio" name="q4" value="b" /> b)</label><label><input type="radio" name="q4" value="c" /> c)</label><label><input type="radio" name="q4" value="d" /> d)</label></div></div>
+<div class="question"><span class="q-label">Q5</span><div class="options"><label><input type="radio" name="q5" value="a" /> a)</label><label><input type="radio" name="q5" value="b" /> b)</label><label><input type="radio" name="q5" value="c" /> c)</label><label><input type="radio" name="q5" value="d" /> d)</label></div></div>
+<div class="question"><span class="q-label">Q6</span><div class="options"><label><input type="radio" name="q6" value="a" /> a)</label><label><input type="radio" name="q6" value="b" /> b)</label><label><input type="radio" name="q6" value="c" /> c)</label><label><input type="radio" name="q6" value="d" /> d)</label></div></div>
+<div class="question"><span class="q-label">Q7</span><div class="options"><label><input type="radio" name="q7" value="a" /> a)</label><label><input type="radio" name="q7" value="b" /> b)</label><label><input type="radio" name="q7" value="c" /> c)</label><label><input type="radio" name="q7" value="d" /> d)</label></div></div>
+<div class="question"><span class="q-label">Q8</span><div class="options"><label><input type="radio" name="q8" value="a" /> a)</label><label><input type="radio" name="q8" value="b" /> b)</label><label><input type="radio" name="q8" value="c" /> c)</label><label><input type="radio" name="q8" value="d" /> d)</label></div></div>
+<div class="question"><span class="q-label">Q9</span><div class="options"><label><input type="radio" name="q9" value="a" /> a)</label><label><input type="radio" name="q9" value="b" /> b)</label><label><input type="radio" name="q9" value="c" /> c)</label><label><input type="radio" name="q9" value="d" /> d)</label></div></div>
+<div class="question"><span class="q-label">Q10</span><div class="options"><p>Deux éléments à considérer :</p><textarea name="q10" rows="3" style="width:100%;"></textarea></div></div>
+<div class="question"><span class="q-label">Q11</span><div class="options"><label><input type="radio" name="q11" value="a" /> a)</label><label><input type="radio" name="q11" value="b" /> b)</label><label><input type="radio" name="q11" value="c" /> c)</label><label><input type="radio" name="q11" value="d" /> d)</label></div></div>
+<div class="question"><span class="q-label">Q12</span><div class="options"><label><input type="radio" name="q12" value="a" /> a)</label><label><input type="radio" name="q12" value="b" /> b)</label><label><input type="radio" name="q12" value="c" /> c)</label><label><input type="radio" name="q12" value="d" /> d)</label></div></div>
+<div class="question"><span class="q-label">Q13</span><div class="options"><label><input type="radio" name="q13" value="a" /> a)</label><label><input type="radio" name="q13" value="b" /> b)</label><label><input type="radio" name="q13" value="c" /> c)</label><label><input type="radio" name="q13" value="d" /> d)</label></div></div>
+<div class="question"><span class="q-label">Q14</span><div class="options"><label><input type="radio" name="q14" value="a" /> a)</label><label><input type="radio" name="q14" value="b" /> b)</label><label><input type="radio" name="q14" value="c" /> c)</label><label><input type="radio" name="q14" value="d" /> d)</label></div></div>
+<div class="question"><span class="q-label">Q15</span><div class="options"><label><input type="radio" name="q15" value="a" /> a)</label><label><input type="radio" name="q15" value="b" /> b)</label><label><input type="radio" name="q15" value="c" /> c)</label><label><input type="radio" name="q15" value="d" /> d)</label></div></div>
+<div class="question"><span class="q-label">Q16</span><div class="options"><label><input type="radio" name="q16" value="a" /> a)</label><label><input type="radio" name="q16" value="b" /> b)</label><label><input type="radio" name="q16" value="c" /> c)</label><label><input type="radio" name="q16" value="d" /> d)</label></div></div>
+<div class="question"><span class="q-label">Q17</span><div class="options"><label><input type="radio" name="q17" value="a" /> a)</label><label><input type="radio" name="q17" value="b" /> b)</label><label><input type="radio" name="q17" value="c" /> c)</label><label><input type="radio" name="q17" value="d" /> d)</label></div></div>
+<div class="question"><span class="q-label">Q18</span><div class="options"><label><input type="radio" name="q18" value="a" /> a)</label><label><input type="radio" name="q18" value="b" /> b)</label><label><input type="radio" name="q18" value="c" /> c)</label><label><input type="radio" name="q18" value="d" /> d)</label></div></div>
+<div class="question"><span class="q-label">Q19</span><div class="options"><label><input type="radio" name="q19" value="a" /> a)</label><label><input type="radio" name="q19" value="b" /> b)</label><label><input type="radio" name="q19" value="c" /> c)</label><label><input type="radio" name="q19" value="d" /> d)</label></div></div>
+<div class="question"><span class="q-label">Q20</span><div class="options"><label><input type="radio" name="q20" value="a" /> a)</label><label><input type="radio" name="q20" value="b" /> b)</label><label><input type="radio" name="q20" value="c" /> c)</label><label><input type="radio" name="q20" value="d" /> d)</label></div></div>
+<div class="question"><span class="q-label">Q21</span><div class="options"><p>Phrase à retenir :</p><textarea name="q21" rows="2" style="width:100%;"></textarea></div></div>
+<div class="question"><span class="q-label">Q22</span><div class="options"><p>Phrase à retenir :</p><textarea name="q22" rows="2" style="width:100%;"></textarea></div></div>
+<div class="question"><span class="q-label">Q23</span><div class="options"><label><input type="radio" name="q23" value="a" /> a)</label><label><input type="radio" name="q23" value="b" /> b)</label><label><input type="radio" name="q23" value="c" /> c)</label><label><input type="radio" name="q23" value="d" /> d)</label></div></div>
+<div class="question"><span class="q-label">Q24</span><div class="options"><label><input type="radio" name="q24" value="a" /> a)</label><label><input type="radio" name="q24" value="b" /> b)</label><label><input type="radio" name="q24" value="c" /> c)</label><label><input type="radio" name="q24" value="d" /> d)</label></div></div>
+<div class="question"><span class="q-label">Q25</span><div class="options"><label><input type="radio" name="q25" value="a" /> a)</label><label><input type="radio" name="q25" value="b" /> b)</label><label><input type="radio" name="q25" value="c" /> c)</label><label><input type="radio" name="q25" value="d" /> d)</label></div></div>
+<div class="question"><span class="q-label">Q26</span><div class="options"><label><input type="radio" name="q26" value="a" /> a)</label><label><input type="radio" name="q26" value="b" /> b)</label><label><input type="radio" name="q26" value="c" /> c)</label><label><input type="radio" name="q26" value="d" /> d)</label></div></div>
+<div class="question"><span class="q-label">Q27</span><div class="options"><label><input type="radio" name="q27" value="a" /> a)</label><label><input type="radio" name="q27" value="b" /> b)</label><label><input type="radio" name="q27" value="c" /> c)</label><label><input type="radio" name="q27" value="d" /> d)</label></div></div>
+<div class="question"><span class="q-label">Q28</span><div class="options"><label><input type="radio" name="q28" value="a" /> a)</label><label><input type="radio" name="q28" value="b" /> b)</label><label><input type="radio" name="q28" value="c" /> c)</label><label><input type="radio" name="q28" value="d" /> d)</label></div></div>
+<div class="question"><span class="q-label">Q29</span><div class="options"><label><input type="radio" name="q29" value="a" /> a)</label><label><input type="radio" name="q29" value="b" /> b)</label><label><input type="radio" name="q29" value="c" /> c)</label><label><input type="radio" name="q29" value="d" /> d)</label></div></div>
+<div class="question"><span class="q-label">Q30</span><div class="options"><label><input type="radio" name="q30" value="a" /> a)</label><label><input type="radio" name="q30" value="b" /> b)</label><label><input type="radio" name="q30" value="c" /> c)</label><label><input type="radio" name="q30" value="d" /> d)</label></div></div>
+<div class="question"><span class="q-label">Q31</span><div class="options"><label><input type="radio" name="q31" value="a" /> Vrai</label><label><input type="radio" name="q31" value="b" /> Faux</label></div></div>
+<div class="question"><span class="q-label">Q32</span><div class="options"><label><input type="radio" name="q32" value="a" /> a)</label><label><input type="radio" name="q32" value="b" /> b)</label><label><input type="radio" name="q32" value="c" /> c)</label><label><input type="radio" name="q32" value="d" /> d)</label></div></div>
+<div class="question"><span class="q-label">Q33</span><div class="options"><label><input type="radio" name="q33" value="a" /> a)</label><label><input type="radio" name="q33" value="b" /> b)</label><label><input type="radio" name="q33" value="c" /> c)</label><label><input type="radio" name="q33" value="d" /> d)</label></div></div>
+<div class="question"><span class="q-label">Q34</span><div class="options"><label><input type="radio" name="q34" value="a" /> a)</label><label><input type="radio" name="q34" value="b" /> b)</label><label><input type="radio" name="q34" value="c" /> c)</label><label><input type="radio" name="q34" value="d" /> d)</label></div></div>
+<div class="question"><span class="q-label">Q35</span><div class="options"><label><input type="radio" name="q35" value="a" /> a)</label><label><input type="radio" name="q35" value="b" /> b)</label><label><input type="radio" name="q35" value="c" /> c)</label><label><input type="radio" name="q35" value="d" /> d)</label></div></div>
+<div class="question"><span class="q-label">Q36</span><div class="options"><label><input type="radio" name="q36" value="a" /> a)</label><label><input type="radio" name="q36" value="b" /> b)</label><label><input type="radio" name="q36" value="c" /> c)</label><label><input type="radio" name="q36" value="d" /> d)</label></div></div>
+<div class="question"><span class="q-label">Q37</span><div class="options"><label><input type="radio" name="q37" value="a" /> a)</label><label><input type="radio" name="q37" value="b" /> b)</label><label><input type="radio" name="q37" value="c" /> c)</label><label><input type="radio" name="q37" value="d" /> d)</label></div></div>
+<div class="question"><span class="q-label">Q38</span><div class="options"><label><input type="radio" name="q38" value="a" /> a)</label><label><input type="radio" name="q38" value="b" /> b)</label><label><input type="radio" name="q38" value="c" /> c)</label><label><input type="radio" name="q38" value="d" /> d)</label></div></div>
+<div class="question"><span class="q-label">Q39</span><div class="options"><label><input type="radio" name="q39" value="a" /> a)</label><label><input type="radio" name="q39" value="b" /> b)</label><label><input type="radio" name="q39" value="c" /> c)</label><label><input type="radio" name="q39" value="d" /> d)</label></div></div>
+<div class="question"><span class="q-label">Q40</span><div class="options"><label><input type="radio" name="q40" value="a" /> a)</label><label><input type="radio" name="q40" value="b" /> b)</label><label><input type="radio" name="q40" value="c" /> c)</label><label><input type="radio" name="q40" value="d" /> d)</label></div></div>
+<div class="question"><span class="q-label">Q41</span><div class="options"><label><input type="radio" name="q41" value="a" /> a)</label><label><input type="radio" name="q41" value="b" /> b)</label><label><input type="radio" name="q41" value="c" /> c)</label><label><input type="radio" name="q41" value="d" /> d)</label></div></div>
+<div class="question"><span class="q-label">Q42</span><div class="options"><label><input type="radio" name="q42" value="a" /> a)</label><label><input type="radio" name="q42" value="b" /> b)</label><label><input type="radio" name="q42" value="c" /> c)</label><label><input type="radio" name="q42" value="d" /> d)</label></div></div>
+<div class="question"><span class="q-label">Q43</span><div class="options"><label><input type="radio" name="q43" value="a" /> a)</label><label><input type="radio" name="q43" value="b" /> b)</label><label><input type="radio" name="q43" value="c" /> c)</label><label><input type="radio" name="q43" value="d" /> d)</label></div></div>
+<div class="question"><span class="q-label">Q44</span><div class="options"><label><input type="radio" name="q44" value="a" /> a)</label><label><input type="radio" name="q44" value="b" /> b)</label><label><input type="radio" name="q44" value="c" /> c)</label><label><input type="radio" name="q44" value="d" /> d)</label></div></div>
+<div class="question"><span class="q-label">Q45</span><div class="options"><label><input type="radio" name="q45" value="a" /> a)</label><label><input type="radio" name="q45" value="b" /> b)</label><label><input type="radio" name="q45" value="c" /> c)</label><label><input type="radio" name="q45" value="d" /> d)</label></div></div>
+<div class="question"><span class="q-label">Q46</span><div class="options"><label><input type="radio" name="q46" value="a" /> a)</label><label><input type="radio" name="q46" value="b" /> b)</label><label><input type="radio" name="q46" value="c" /> c)</label><label><input type="radio" name="q46" value="d" /> d)</label></div></div>
+<div class="question"><span class="q-label">Q47</span><div class="options"><label><input type="radio" name="q47" value="v" /> Vrai</label><label><input type="radio" name="q47" value="f" /> Faux</label></div></div>
+<div class="question"><span class="q-label">Q48</span><div class="options"><label><input type="radio" name="q48" value="v" /> Vrai</label><label><input type="radio" name="q48" value="f" /> Faux</label></div></div>
+<div class="question"><span class="q-label">Q49</span><div class="options"><label><input type="radio" name="q49" value="v" /> Vrai</label><label><input type="radio" name="q49" value="f" /> Faux</label></div></div>
+<div class="question"><span class="q-label">Q50</span><div class="options"><label><input type="radio" name="q50" value="v" /> Vrai</label><label><input type="radio" name="q50" value="f" /> Faux</label></div></div>
+<div class="question"><span class="q-label">Q51</span><div class="options"><label><input type="radio" name="q51" value="v" /> Vrai</label><label><input type="radio" name="q51" value="f" /> Faux</label></div></div>
+<div class="question"><span class="q-label">Q52</span><div class="options"><label><input type="radio" name="q52" value="v" /> Vrai</label><label><input type="radio" name="q52" value="f" /> Faux</label></div></div>
+<div class="question"><span class="q-label">Q53</span><div class="options"><label><input type="radio" name="q53" value="a" /> RGS</label><label><input type="radio" name="q53" value="b" /> Recommandation</label></div></div>
+<div class="question"><span class="q-label">Q54</span><div class="options"><label><input type="radio" name="q54" value="a" /> RGS</label><label><input type="radio" name="q54" value="b" /> Recommandation</label></div></div>
+<div class="question"><span class="q-label">Q55</span><div class="options"><label><input type="radio" name="q55" value="a" /> RGS</label><label><input type="radio" name="q55" value="b" /> Recommandation</label></div></div>
+<div class="question"><span class="q-label">Q56</span><div class="options"><label><input type="radio" name="q56" value="a" /> RGS</label><label><input type="radio" name="q56" value="b" /> Recommandation</label></div></div>
+<div class="question"><span class="q-label">Q57</span><div class="options"><label><input type="radio" name="q57" value="a" /> RGS</label><label><input type="radio" name="q57" value="b" /> Recommandation</label></div></div>
+<div class="question"><span class="q-label">Q58</span><div class="options"><label><input type="radio" name="q58" value="a" /> RGS</label><label><input type="radio" name="q58" value="b" /> Recommandation</label></div></div>
+<div class="question"><span class="q-label">Q59</span><div class="options"><label><input type="radio" name="q59" value="a" /> RGS</label><label><input type="radio" name="q59" value="b" /> Recommandation</label></div></div>
+<div class="question"><span class="q-label">Q60</span><div class="options"><p>Tracer / décrire le circuit d'atterrissage :</p><textarea name="q60" rows="6" style="width:100%;"></textarea></div></div>
+<div class="buttons">
+<button type="button" id="save-btn">Sauvegarder pour plus tard</button>
+<button type="submit" id="submit-btn">Soumettre</button>
+</div>
+</form>
+<p id="status" class="status"></p>
+</section>
+</div>
+</body>
+</html>
+
