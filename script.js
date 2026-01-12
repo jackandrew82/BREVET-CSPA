@@ -103,7 +103,7 @@ answerForm.addEventListener("submit", function(e) {
 
   var scorePercent = total > 0 ? Math.round((correctCount / total) * 100) : 0;
 
-  var templateParams = {
+  var payload = {
     student_name: currentName,
     brevet: currentBrevet,
     score: correctCount + " / " + total + " (" + scorePercent + "%)",
@@ -111,13 +111,21 @@ answerForm.addEventListener("submit", function(e) {
     answers_json: JSON.stringify(answers, null, 2)
   };
 
-  emailjs.send("service_y0utpma", "template_ok28zin", templateParams)
-    .then(function(result) {
-      console.log("Email envoyé:", result.status, result.text);
-      statusEl.textContent = "Réponses transmises à l'instructeur. Vous pouvez fermer cette page.";
-    })
-    .catch(function(err) {
-      console.error("Erreur EmailJS:", err);
-      statusEl.textContent = "Erreur lors de l'envoi. Veuillez réessayer plus tard.";
-    });
+  // Appel à la fonction Netlify
+  fetch('/.netlify/functions/submit-brevet', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload)
+  })
+  .then(function(response) { 
+    return response.json(); 
+  })
+  .then(function(data) {
+    console.log("Succès:", data);
+    statusEl.textContent = "Réponses transmises à l'instructeur. Vous pouvez fermer cette page.";
+  })
+  .catch(function(err) {
+    console.error("Erreur:", err);
+    statusEl.textContent = "Erreur lors de l'envoi. Veuillez réessayer plus tard.";
+  });
 });
