@@ -11,7 +11,7 @@ async function generateErrorReportPDF(studentName, brevet, score, mistakes) {
 
   let y = height - 60;
 
-  // En-tête
+  // En-tete
   page.drawRectangle({
     x: 0,
     y: height - 120,
@@ -30,18 +30,18 @@ async function generateErrorReportPDF(studentName, brevet, score, mistakes) {
 
   y -= 35;
 
-  page.drawText(`Étudiant : ${studentName}`, { 
+  page.drawText('Etudiant : ' + studentName, { 
     x: 50, y: y, size: 14, font: boldFont, color: rgb(0, 0, 0),
   });
   
   y -= 22;
-  page.drawText(`Brevet : ${brevet}`, { 
+  page.drawText('Brevet : ' + brevet, { 
     x: 50, y: y, size: 12, font, color: rgb(0.3, 0.3, 0.3),
   });
   
   y -= 20;
   
-  const scoreText = `Résultat : ${score}`;
+  const scoreText = 'Resultat : ' + score;
   const scorePercent = parseInt(score.match(/\((\d+)%\)/)?.[1] || 0);
   const scoreColor = scorePercent >= 80 ? rgb(0, 0.6, 0) : 
                      scorePercent >= 60 ? rgb(0.8, 0.6, 0) : 
@@ -59,16 +59,16 @@ async function generateErrorReportPDF(studentName, brevet, score, mistakes) {
       color: rgb(0.9, 1, 0.9), borderColor: rgb(0, 0.6, 0), borderWidth: 2,
     });
     
-    page.drawText('🎉 FÉLICITATIONS !', {
+    page.drawText('FELICITATIONS !', {
       x: 50, y: y - 10, size: 16, font: boldFont, color: rgb(0, 0.6, 0),
     });
     
-    page.drawText('Aucune erreur détectée. Excellent travail !', {
+    page.drawText('Aucune erreur detectee. Excellent travail !', {
       x: 50, y: y - 32, size: 12, font, color: rgb(0, 0.5, 0),
     });
     
   } else {
-    page.drawText(`QUESTIONS À REVOIR (${mistakes.length})`, {
+    page.drawText('QUESTIONS A REVOIR (' + mistakes.length + ')', {
       x: 50, y: y, size: 16, font: boldFont, color: rgb(0.8, 0, 0),
     });
     
@@ -81,7 +81,6 @@ async function generateErrorReportPDF(studentName, brevet, score, mistakes) {
       const qNum = mistake.question;
       const questionData = questionsData[qNum];
       
-      // Hauteur dynamique selon si on a les données complètes
       const boxHeight = questionData ? 180 : 75;
       
       if (y < boxHeight + 50) {
@@ -89,19 +88,16 @@ async function generateErrorReportPDF(studentName, brevet, score, mistakes) {
         y = height - 60;
       }
 
-      // Encadré
       page.drawRectangle({
         x: 40, y: y - boxHeight, width: width - 80, height: boxHeight,
         color: rgb(1, 0.98, 0.95), borderColor: rgb(0.9, 0.9, 0.9), borderWidth: 1,
       });
 
-      // Numéro et énoncé
-      page.drawText(`Question ${qNum}`, {
+      page.drawText('Question ' + qNum, {
         x: 50, y: y - 20, size: 13, font: boldFont, color: rgb(0, 0, 0),
       });
 
       if (questionData) {
-        // Énoncé de la question
         const questionText = questionData.question;
         const maxWidth = width - 120;
         const words = questionText.split(' ');
@@ -122,13 +118,12 @@ async function generateErrorReportPDF(studentName, brevet, score, mistakes) {
           page.drawText(line, { x: 55, y: lineY, size: 9, font, color: rgb(0.2, 0.2, 0.2) });
         }
 
-        // Choix de réponses
         let choiceY = y - 80;
         const userAnswer = mistake.user_answer || '';
         const rightAnswer = mistake.right_answer;
 
-        ['a', 'b', 'c', 'd'].forEach(choice => {
-          if (questionData.choices[choice]) {
+        ['a', 'b', 'c', 'd', 'v', 'f'].forEach(choice => {
+          if (questionData.choices && questionData.choices[choice]) {
             const isUser = choice === userAnswer;
             const isCorrect = choice === rightAnswer;
             
@@ -137,20 +132,20 @@ async function generateErrorReportPDF(studentName, brevet, score, mistakes) {
             let choiceFont = font;
             
             if (isCorrect && isUser) {
-              prefix = '✓ '; // Bonne réponse cochée
+              prefix = '[OK] ';
               color = rgb(0, 0.6, 0);
               choiceFont = boldFont;
             } else if (isCorrect) {
-              prefix = '✓ '; // Bonne réponse
+              prefix = '[OK] ';
               color = rgb(0, 0.6, 0);
               choiceFont = boldFont;
             } else if (isUser) {
-              prefix = '✗ '; // Mauvaise réponse cochée
+              prefix = '[X] ';
               color = rgb(0.9, 0, 0);
               choiceFont = boldFont;
             }
             
-            page.drawText(`${prefix}${choice}) ${questionData.choices[choice]}`, {
+            page.drawText(prefix + choice + ') ' + questionData.choices[choice], {
               x: 60, y: choiceY, size: 9, font: choiceFont, color,
             });
             choiceY -= 15;
@@ -158,15 +153,14 @@ async function generateErrorReportPDF(studentName, brevet, score, mistakes) {
         });
 
       } else {
-        // Si pas de données, affichage simple
-        const userAnswer = mistake.user_answer || 'Aucune réponse';
-        page.drawText(`Ta réponse :`, {
+        const userAnswer = mistake.user_answer || 'Aucune reponse';
+        page.drawText('Ta reponse :', {
           x: 70, y: y - 40, size: 10, font: boldFont, color: rgb(0.5, 0.5, 0.5),
         });
         page.drawText(userAnswer, {
           x: 155, y: y - 40, size: 11, font: boldFont, color: rgb(0.9, 0, 0),
         });
-        page.drawText(`Bonne réponse :`, {
+        page.drawText('Bonne reponse :', {
           x: 70, y: y - 58, size: 10, font: boldFont, color: rgb(0.5, 0.5, 0.5),
         });
         page.drawText(mistake.right_answer, {
@@ -178,10 +172,9 @@ async function generateErrorReportPDF(studentName, brevet, score, mistakes) {
     }
   }
 
-  // Pied de page
   const pages = pdfDoc.getPages();
   pages.forEach((p, index) => {
-    p.drawText(`CSPA - Correction Brevet ${brevet} - Page ${index + 1}/${pages.length}`, {
+    p.drawText('CSPA - Correction Brevet ' + brevet + ' - Page ' + (index + 1) + '/' + pages.length, {
       x: 50, y: 20, size: 8, font, color: rgb(0.5, 0.5, 0.5),
     });
   });
