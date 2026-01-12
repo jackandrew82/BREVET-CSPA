@@ -26,45 +26,36 @@ async function generateAnswerSheetPDF(studentName, brevet, mistakes, allAnswers)
   
   const positions = ANSWER_POSITIONS[brevet] || {};
   
-  // Marquer TOUTES les reponses (bonnes en vert, mauvaises en rouge)
-  const mistakesMap = {};
-  mistakes.forEach(m => {
-    mistakesMap[m.question] = {
-      user: m.user_answer,
-      correct: m.right_answer
-    };
-  });
-  
-  // Pour chaque question repondue
-  for (const [qNum, userAnswer] of Object.entries(allAnswers)) {
-    if (!userAnswer || userAnswer === '') continue;
-    
-    const isMistake = mistakesMap[qNum];
-    const color = isMistake ? rgb(1, 0, 0) : rgb(0, 0.6, 0); // Rouge si erreur, vert si bon
+  // Marquer SEULEMENT les erreurs en rouge
+  mistakes.forEach(mistake => {
+    const qNum = mistake.question;
+    const userAnswer = mistake.user_answer;
     
     if (positions[qNum]) {
       const pos = positions[qNum];
       const targetPage = pages[pos.page] || firstPage;
       
-      // Cercle autour numero question
+      // Cercle rouge autour numero question
       targetPage.drawCircle({
         x: pos.x,
         y: pos.y,
         size: 12,
-        borderColor: color,
+        borderColor: rgb(1, 0, 0),
         borderWidth: 2.5,
       });
       
-      // Afficher la reponse cochee a cote
-      targetPage.drawText('[' + userAnswer + ']', {
-        x: pos.x + 20,
-        y: pos.y - 4,
-        size: 10,
-        font: boldFont,
-        color: color,
-      });
+      // Afficher reponse incorrecte a cote en rouge
+      if (userAnswer) {
+        targetPage.drawText('[' + userAnswer + ']', {
+          x: pos.x + 20,
+          y: pos.y - 4,
+          size: 10,
+          font: boldFont,
+          color: rgb(1, 0, 0),
+        });
+      }
     }
-  }
+  });
   
   const pdfBytes = await pdfDoc.save();
   return Buffer.from(pdfBytes);
