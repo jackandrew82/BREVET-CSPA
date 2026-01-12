@@ -22,11 +22,11 @@ async function generateAnswerSheetPDF(studentName, brevet, mistakes, allAnswers)
     color: rgb(0, 0, 0),
   });
   
-  // TEST Q2 avec nouvelles coordonnees
+  // TEST Q2 avec nouvelles coordonnees ajustees
   if (allAnswers['q2']) {
     firstPage.drawText('Q2: ' + allAnswers['q2'], {
-      x: 62,  // 90 - 28 (1 cm gauche)
-      y: 640, // 725 - 85 (3 cm bas)
+      x: 35,  // Plus a gauche
+      y: 610, // Plus bas
       size: 11,
       font: boldFont,
       color: rgb(1, 0, 0),
