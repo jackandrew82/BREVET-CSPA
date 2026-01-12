@@ -44,7 +44,7 @@ async function generateAnswerSheetPDF(studentName, brevet, mistakes, allAnswers)
         borderWidth: 2.5,
       });
       
-      // Reponse incorrecte a cote en rouge
+      // Reponse incorrecte a cote
       if (userAnswer) {
         targetPage.drawText('[' + userAnswer + ']', {
           x: pos.x + 20,
