@@ -23,74 +23,54 @@ async function generateAnswerSheetPDF(studentName, brevet, mistakes, allAnswers)
     color: rgb(0, 0, 0),
   });
   
-  // Si erreurs, grand encadre rouge en haut
-  if (mistakes.length > 0) {
-    // Rectangle rouge
-    firstPage.drawRectangle({
-      x: 40,
-      y: height - 150,
-      width: width - 80,
-      height: 90,
-      color: rgb(1, 0.95, 0.95),
-      borderColor: rgb(1, 0, 0),
-      borderWidth: 3,
-    });
+  // Positions approximatives (colonnes gauche et droite)
+  const leftColumn = { x: 20, startY: 750 };
+  const rightColumn = { x: 320, startY: 750 };
+  
+  // Surligner chaque question erronee
+  mistakes.forEach(mistake => {
+    const qNum = parseInt(mistake.question);
+    let x, y, page = 0;
     
-    // Titre
-    firstPage.drawText('QUESTIONS A CORRIGER:', {
-      x: 50,
-      y: height - 70,
-      size: 14,
-      font: boldFont,
-      color: rgb(0.8, 0, 0),
-    });
-    
-    // Liste des numeros de questions erronees
-    const errorNumbers = mistakes.map(m => {
-      const userAns = m.user_answer || 'X';
-      return 'Q' + m.question + '[' + userAns + ']';
-    });
-    
-    // Afficher en plusieurs lignes si necessaire
-    let currentLine = '';
-    let lineY = height - 95;
-    
-    errorNumbers.forEach((item, index) => {
-      const testLine = currentLine + item + '  ';
-      if (font.widthOfTextAtSize(testLine, 11) > width - 120) {
-        firstPage.drawText(currentLine, {
-          x: 50,
-          y: lineY,
-          size: 11,
-          font: boldFont,
-          color: rgb(0.8, 0, 0),
-        });
-        currentLine = item + '  ';
-        lineY -= 18;
-      } else {
-        currentLine = testLine;
-      }
-    });
-    
-    if (currentLine) {
-      firstPage.drawText(currentLine, {
-        x: 50,
-        y: lineY,
-        size: 11,
-        font: boldFont,
-        color: rgb(0.8, 0, 0),
-      });
+    // Logique simple de positionnement
+    if (qNum <= 23) {
+      // Page 1, colonne gauche
+      x = leftColumn.x;
+      y = leftColumn.startY - ((qNum - 1) * 25);
+      page = 0;
+    } else if (qNum <= 46) {
+      // Page 1, colonne droite
+      x = rightColumn.x;
+      y = rightColumn.startY - ((qNum - 24) * 25);
+      page = 0;
+    } else {
+      // Page 1, colonne droite (suite)
+      x = rightColumn.x;
+      y = rightColumn.startY - ((qNum - 47) * 25);
+      page = 0;
     }
     
-    // Note
-    firstPage.drawText('(Voir rapport detaille PDF joint)', {
-      x: 50,
-      y: height - 145,
-      size: 8,
-      font,
-      color: rgb(0.5, 0, 0),
+    const targetPage = pages[page] || firstPage;
+    
+    // Rectangle rouge semi-transparent (surlignage)
+    targetPage.drawRectangle({
+      x: x - 5,
+      y: y - 3,
+      width: 35,
+      height: 16,
+      color: rgb(1, 0, 0),
+      opacity: 0.3,
     });
-  }
+    
+    // Texte rouge gras
+    targetPage.drawText('Q' + mistake.question, {
+      x: x,
+      y: y,
+      size: 11,
+      font: boldFont,
+      color: rgb(1, 0, 0),
+    });
+  });
   
   const pdfBytes = await pdfDoc.save();
   return Buffer.from(pdfBytes);
