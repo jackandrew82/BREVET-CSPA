@@ -22,24 +22,24 @@ async function generateAnswerSheetPDF(studentName, brevet, mistakes, allAnswers)
     color: rgb(0, 0, 0),
   });
   
-  // TEST : Q2 a 5 positions differentes
+  // CALIBRATION RAPIDE - Test Q2 seulement
+  // Afficher dimensions pour reference
+  firstPage.drawText('PDF: ' + width + 'x' + height, {
+    x: 50,
+    y: 50,
+    size: 8,
+    font: boldFont,
+    color: rgb(0, 0, 1),
+  });
+  
+  // Si Q2 repondue, afficher a position test
   if (allAnswers['q2']) {
-    const testPositions = [
-      { x: 80, y: 740, label: 'A' },
-      { x: 80, y: 730, label: 'B' },
-      { x: 80, y: 720, label: 'C' },
-      { x: 80, y: 710, label: 'D' },
-      { x: 80, y: 700, label: 'E' }
-    ];
-    
-    testPositions.forEach(pos => {
-      firstPage.drawText(pos.label + ':' + allAnswers['q2'], {
-        x: pos.x,
-        y: pos.y,
-        size: 10,
-        font: boldFont,
-        color: rgb(1, 0, 0),
-      });
+    firstPage.drawText('TEST-Q2: ' + allAnswers['q2'], {
+      x: 90,  // Position horizontale (apres le numero)
+      y: 725, // Position verticale (a ajuster)
+      size: 11,
+      font: boldFont,
+      color: rgb(1, 0, 0),
     });
   }
   
