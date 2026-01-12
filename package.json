@@ -1,1 +1,8 @@
-
+{
+  "name": "brevet-cspa",
+  "version": "1.0.0",
+  "description": "Système de correction automatique pour brevets CSPA",
+  "dependencies": {
+    "nodemailer": "^6.9.7"
+  }
+}
