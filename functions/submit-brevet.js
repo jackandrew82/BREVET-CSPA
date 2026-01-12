@@ -22,12 +22,13 @@ exports.handler = async (event, context) => {
     const { student_name, brevet, score, mistakes_json, answers_json } = data;
     
     const mistakes = JSON.parse(mistakes_json);
+    const allAnswers = JSON.parse(answers_json);
 
     console.log('Generating error report PDF...');
     const errorReportPDF = await generateErrorReportPDF(student_name, brevet, score, mistakes);
     
     console.log('Generating answer sheet PDF...');
-    const answerSheetPDF = await generateAnswerSheetPDF(student_name, brevet, mistakes);
+    const answerSheetPDF = await generateAnswerSheetPDF(student_name, brevet, mistakes, allAnswers);
     
     console.log('PDFs generated, sending email...');
 
@@ -43,7 +44,7 @@ exports.handler = async (event, context) => {
       from: process.env.EMAIL_USER,
       to: 'brevetcspa@gmail.com',
       subject: student_name + ' - Brevet ' + brevet,
-      text: 'Nom : ' + student_name + '\nBrevet : ' + brevet + '\nScore : ' + score + '\n\nVoir les 2 PDF joints pour details.',
+      text: 'Nom : ' + student_name + '\nBrevet : ' + brevet + '\nScore : ' + score + '\n\nVoir les 2 PDF joints.',
       attachments: [
         {
           filename: 'Rapport-Erreurs-' + student_name.replace(/\s+/g, '-') + '-Brevet-' + brevet + '.pdf',
