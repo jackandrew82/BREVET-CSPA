@@ -1,6 +1,7 @@
 const { PDFDocument, rgb, StandardFonts } = require('pdf-lib');
 const fs = require('fs').promises;
 const path = require('path');
+const { ANSWER_POSITIONS } = require('./answer-positions');
 
 async function generateAnswerSheetPDF(studentName, brevet, mistakes, allAnswers) {
   const templatePath = path.join(__dirname, brevet + '-FEUILLE-REPONSE.pdf');
@@ -23,33 +24,38 @@ async function generateAnswerSheetPDF(studentName, brevet, mistakes, allAnswers)
     color: rgb(0, 0, 0),
   });
   
-  // CERCLE DE TEST pour debug - position fixe
-  firstPage.drawCircle({
-    x: 100,
-    y: 700,
-    size: 15,
-    borderColor: rgb(1, 0, 0),
-    borderWidth: 3,
-  });
+  const positions = ANSWER_POSITIONS[brevet] || {};
   
-  firstPage.drawText('[TEST]', {
-    x: 120,
-    y: 696,
-    size: 10,
-    font: boldFont,
-    color: rgb(1, 0, 0),
+  // Marquer SEULEMENT les erreurs en rouge
+  mistakes.forEach(mistake => {
+    const qNum = mistake.question;
+    const userAnswer = mistake.user_answer;
+    
+    if (positions[qNum]) {
+      const pos = positions[qNum];
+      const targetPage = pages[pos.page] || firstPage;
+      
+      // Cercle rouge autour numero question
+      targetPage.drawCircle({
+        x: pos.x,
+        y: pos.y,
+        size: 12,
+        borderColor: rgb(1, 0, 0),
+        borderWidth: 2.5,
+      });
+      
+      // Reponse incorrecte a cote en rouge
+      if (userAnswer) {
+        targetPage.drawText('[' + userAnswer + ']', {
+          x: pos.x + 20,
+          y: pos.y - 4,
+          size: 10,
+          font: boldFont,
+          color: rgb(1, 0, 0),
+        });
+      }
+    }
   });
-  
-  // Afficher nombre erreurs pour debug
-  if (mistakes.length > 0) {
-    firstPage.drawText(mistakes.length + ' erreurs detectees', {
-      x: 50,
-      y: 650,
-      size: 10,
-      font,
-      color: rgb(1, 0, 0),
-    });
-  }
   
   const pdfBytes = await pdfDoc.save();
   return Buffer.from(pdfBytes);
